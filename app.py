@@ -1,6 +1,6 @@
 # 1. Importing extensions
 import streamlit as st
-import google.generativeai as ai
+import google.generativeai as a
 
 # Step 1: Creating sidebar
 with st.sidebar:
@@ -12,25 +12,26 @@ with st.sidebar:
     # 3. Taking user question
     question = st.chat_input('Ask anything..')
     
-    prompt = f'''
-    Answer this question: {question} 
+    prompt = f'''Answer this qustion: {question}
     Given this info:
-    - You are an AI assitant for a restaurant named PizzaHub
-    - This is an italian restaurant
-    - Working hours: 10 AM to 11 PM
-    - WhatsApp: 01121029029
-    - Menu:
-    margerita:price
-    Small':140,
-            'Medium':180,
-            'large':200,
-            orange_juice_price = 70 
-            ranch:price
-              'Small':170,
-            'Medium':200,
-            'Large':230
+    - you are an AI assitant for a restaurant named pizzaHub
+    -This is an italian restaurant
+    -Working hours: 10 Am to 11pm
+    -WhatsApp: 01121029029
+    -Menu:
+    Chicken Ranch
+    small:170
+    Medium:200
+    Large:230
+    None:0
+    Margerite
+    small:140
+    medium:180
+    large:200
+  
+
     '''
-    
+
     # 4. Displaying user message
     if question:
         with st.chat_message('user'):
@@ -73,7 +74,8 @@ with pizza_tab:
         margerita_prices = {
             'Small':140,
             'Medium':180,
-            'Large':200
+            'Large':200,
+            None:0
         }
         
         # Displaying the price
@@ -97,7 +99,8 @@ with pizza_tab:
         ranch_prices = {
             'Small':170,
             'Medium':200,
-            'Large':230
+            'Large':230,
+            None:0
         }
         # Displaying the price
         ranch_price = ranch_prices[ranch_size]
@@ -120,7 +123,8 @@ with pizza_tab:
         pepperoni_prices = {
             'Small':180,
             'Medium':220,
-            'Large':250
+            'Large':250,
+            None:0
         }
         # Displaying the price
         pepperoni_price = pepperoni_prices[pepperoni_size]
@@ -270,5 +274,34 @@ with drinks_tab:
             'Choose quantity:',
             min_value=0,
             max_value=100,
-            key='water_qty'
+            key='water_qty')
+
+# Final step
+items =['Margerta','pepperoni','Runch','Water','orange juice',
+    'cola', 'sprite', 'alfredo', 'pesto', 'bolongese'] 
+
+quantities=[margerita_qty, pepperoni_qty, ranch_qty,water_qty,cola_qty,
+ sprite_qty,alfredo_qty,pesto_qty,bolognese_qty]  
+
+st.table(
+    {'Item':items,'Quantity':quantities}
+)
+
+
+
+with st.bottom: # inside the bottom section
+    if st.button('calculate tital', type='primary', 
+          use_container_width=True):
+        total= (
+            margertia_price*margerita_qty +
+            ranch_price*ranch_qty +
+            pepperoni_price*pepperoni_qty+
+            pesto_price*pesto_qty+
+            alfredo_price*alfredo_qty+
+            bolognese_price*bolognese_qty+
+            water_price*water_qty+
+            sprite_price*sprite_qty+
+            cola_price*cola_qty+
+            orange_juice_price*orange_juice_qty
         )
+        st.subheader(f'Total cost = {total} EGP')
